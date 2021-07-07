@@ -1,0 +1,55 @@
+version: '3.5'
+
+services:
+    backend1:
+        build:
+            context: backend1
+            dockerfile: Dockerfile
+        volumes: 
+            - ./backend1:/app
+        working_dir: /app
+        environment: 
+            - FLASK_APP=app.py
+        command: flask run --host=0.0.0.0 --port=8088
+        ports:
+            - "8088:8088"
+        networks: 
+            - backend
+    
+    backend2:
+        build:
+            context: backend1
+            dockerfile: Dockerfile
+        volumes: 
+            - ./backend1:/app
+        working_dir: /app
+        environment: 
+            - FLASK_APP=app.py
+        command: flask run --host=0.0.0.0 --port=8089
+        ports:
+            - "8089:8089"
+        networks: 
+            - backend
+
+    webserver:
+        image: nginx:latest
+        ports:
+            - "8000:80"
+        volumes: 
+            - ./nginx/conf.d/:/etc/nginx/conf.d/
+        networks: 
+            - backend
+    
+    mongodb:
+        image: mongo 
+        volumes: 
+            - mongodata:/data/db
+        networks: 
+            - backend
+        
+volumes: 
+    mongodata:
+    
+networks: 
+    backend:
+        driver: bridge
