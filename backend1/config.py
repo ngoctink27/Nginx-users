@@ -11,7 +11,7 @@ app.config["JWT_SECRET_KEY"] = "super-secret"
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 
-app.config["MONGODB_SETTINGS"] = {"host": "mongodb://localhost:27017/Users"}
+app.config["MONGODB_SETTINGS"] = {"host": "mongodb://mongodb:27017/Users"}
 initialize_db(app)
 
 app.register_blueprint(theme)
